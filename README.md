@@ -10,7 +10,7 @@
 
     url    原网址 (GET方式请先将原网址进行URL编码)(10~255)
     short  自定义端网址 (4~10)
-    res    返回方式 (可选json、xml,默认为json)
+    encode 返回方式 (可选json、xml,默认为json)
    
 ## 返回:
 ### json 返回示例
@@ -18,7 +18,7 @@
 //失败
 {
     "code": 1001,
-    "msg": "原网址应该在4～255位",
+    "msg": "url不能为空",
     "url": ""
 }
 //成功
@@ -32,18 +32,18 @@
 ```xml
 <!-- 失败 -->
 <?xml version="1.0" encoding="utf-8"?>
-<data>
-  <code>-1</code>
-  <msg>原网址应该在4～255位</msg>
+<res>
+  <code>-1001</code>
+  <msg>url不能为空</msg>
   <url/>
-</data>
+</res>
 <!-- 成功 -->
 <?xml version="1.0" encoding="utf-8"?>
-<data>
+<res>
   <code>0</code>
   <msg>success</msg>
   <url>https://example.com/success</url>
-</data>
+</res>
 ```
         
 

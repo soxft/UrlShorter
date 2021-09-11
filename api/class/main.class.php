@@ -28,7 +28,7 @@ class Main
             return ['code' => 2, 'msg' => 'method not exist'];
         }
 
-        $func = new $this->method($this->conn, $this->apiMethod, $this->param);
+        $func = new $this->method($this->conn, $this->param, $this->apiMethod);
         return $func->run();
     }
 
