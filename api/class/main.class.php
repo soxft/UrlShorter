@@ -6,14 +6,38 @@
 
 class Main
 {
-    function __construct($conn, $method, $params)
+    function __construct(object $conn, string $method, array $param, string $apiMethod)
     {
+        $this->conn = $conn;
+        $this->method = $method;
+        $this->param = $param;
+        $this->apiMethod = $apiMethod;
     }
 
-    
-    public function run()
+
+    public function run(): array
     {
+        if (!self::checkFileExist($this->method)) {
+            header("HTTP/1.1 404 NOT FOUND");
+            return ['code' => 1, 'msg' => 'method not exist'];
+        }
+
+        require_once FUNCTIONROOT . $this->method . '.php';
+        if (!class_exists($this->method) || !method_exists($this->method, 'run')) {
+            header("HTTP/1.1 404 NOT FOUND");
+            return ['code' => 2, 'msg' => 'method not exist'];
+        }
+
+        $func = new $this->method($this->conn, $this->apiMethod, $this->param);
+        return $func->run();
     }
+
+    private static function checkFileExist(string $filePath): bool
+    {
+        if (file_exists(FUNCTIONROOT . $filePath . '.php')) return true;
+        return false;
+    }
+
 
     public static function SafeFilter(&$arr)
     {

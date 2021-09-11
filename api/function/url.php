@@ -11,9 +11,11 @@ class url extends urllib
     function __construct($conn)
     {
         $this->conn = $conn;
+        parent::__construct($conn);
     }
 
-    public function run($url)
+    public function run(): array
     {
+        return [];
     }
 }
