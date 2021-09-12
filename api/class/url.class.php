@@ -11,6 +11,7 @@ class urllib
     function __construct($conn)
     {
         $this->conn = $conn;
+        $this->ifUserDefine = false; //是否用户自定义短链
     }
 
     /**
@@ -74,10 +75,12 @@ class urllib
     private function addShorter(string $url, string $short)
     {
         //检测是否已经存在
-        $sel = $this->conn->prepare("SELECT `short` FROM `shorter` WHERE `url` = ? ");
-        $sel->execute([$url]);
-        $res = $sel->fetch();
-        if ($res) return $res['short'];
+        if (!$this->ifUserDefine) {
+            $sel = $this->conn->prepare("SELECT `short` FROM `shorter` WHERE `url` = ? ");
+            $sel->execute([$url]);
+            $res = $sel->fetch();
+            if ($res) return $res['short'];
+        }
         $insert = $this->conn->prepare("INSERT INTO `shorter` VALUES ('0', ? , ? , ? , ? )");
         $insert->execute([$short, $url, time(), tool::getIp()]);
         if ($insert->rowCount() === 0) throw new \Exception('写入短链接失败');
@@ -97,6 +100,7 @@ class urllib
             $checkIfExists->execute();
             if ($checkIfExists->rowCount() == 0) break;
         }
+        $this->ifUserDefine = true;
         return $short;
     }
 }
