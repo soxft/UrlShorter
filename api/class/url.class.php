@@ -22,7 +22,17 @@ class urllib
      */
     function getLongUrl(string $short): array
     {
-        return [];
+        try {
+            $sel = $this->conn->prepare("SELECT `url` FROM `shorter` WHERE `short` = ? ");
+            $sel->execute([$short]);
+            $res = $sel->fetch();
+            if ($res) return ['code' => 0, 'msg' => 'success', 'url' => $res['url']];
+            return ['code' => 404, 'msg' => 'not found', 'data' => ''];
+        } catch (PDOException $e) {
+            $arr = ['code' => 500, 'msg' => 'error', 'data' => ''];
+            if (DEBUG) $arr['err'] = $e->getMessage();
+            return $arr;
+        }
     }
 
     /**
