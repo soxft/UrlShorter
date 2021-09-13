@@ -32,7 +32,7 @@
     <script src="https://cdn.jsdelivr.net/gh/soxft/cdn@1.9/urlshorting/clipboard.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/soxft/cdn@2.7/jquery/jquery-qrcode/jquery.qrcode.min.js"></script>
     <script src="https://www.layuicdn.com/layer/layer.js"></script>
-    <script src="assets/js/main.js"></script>
+    <script src="assets/js/main.js?v=1.01"></script>
 </head>
 
 
@@ -60,7 +60,7 @@
                             <input type="email" class="form-control url">
                         </div>
                         <div class="form-group">
-                            <label">自定义短链</label>
+                            <label>自定义短链</label>
                                 <div class="input-group mb-3">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><?php echo WEBURL ?></span>

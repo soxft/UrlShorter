@@ -8,7 +8,7 @@
 // 用户配置项
 define('TITLE', 'UrlShorter'); //网站名称
 
-define('WEBURL', 'https://t.cn/'); //网站域名 以 / 结尾
+define('WEBURL', 'http://t.cn/'); //网站域名 以 / 结尾
 
 define('DB', array('localhost', 'urlshorter', 'urlshorter', 'urlshorter.')); //数据库地址 数据库名 用户名 密码 
 

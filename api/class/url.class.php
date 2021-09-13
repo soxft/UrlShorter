@@ -47,7 +47,7 @@ class urllib
         try {
             //处理URL
             $url = $this->getUrl($url);
-            if (!preg_match("/^http(s?):\/\/(?:[A-za-z0-9-]+\.)+[A-za-z]{2,4}(?:[\/\?#][\/=\?%\-&~`@[\]\':+!\.#\w]*)?$/", $url))  return ['code' => 1004, 'msg' => '非法的网址', 'url' => ''];
+            if (!preg_match("/^http(s?):\/\/(?:[A-za-z0-9-]+\.)+[A-za-z]{2,4}+(\/){0,1}+(.*)$/", $url))  return ['code' => 1004, 'msg' => '非法的网址', 'url' => $url];
             if (mb_strlen($url) > 1500 || mb_strlen($url) < 10) return ['code' => 1005, 'msg' => '网址长度应该在10到1500位', 'url' => ''];
             if (!$short) $short = $this->createShort();
             if (!preg_match('/^[a-zA-Z0-9]{0,}$/', $short)) return ['code' => 1002, 'msg' => '短链接必须为字母,数字,组合', 'url' => ''];

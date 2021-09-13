@@ -10,6 +10,8 @@ $(document).ready(function () {
 
         var url = $('.mainFrom .url').val()
         var short = $('.mainFrom .short').val()
+        
+        $('#successModal .qrcode').empty()
 
         $.ajax({
             url: 'api/url',
