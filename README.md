@@ -3,50 +3,23 @@
 >
 > This is a simple Url shortener.
 
+# 兼容性
+
+> 在PHP7.X 与 PHP 8.0 下测试通过
+
+# 安装
+
+- step 1: `git clone git@github.com:soxft/UrlShorter.git`
+- step 2: 修改 /api/config.php 中填写您的mysql信息 以及网址等
+- step 3: 导入/mysql.sql 至您的数据库
+- step 4: 配伪静态(/nginx.conf) 目前仅有nginx的伪静态配置, 您也可以尝试转换为Apache及iis的伪静态
+- step 5: 开始使用
+
 # API
->POST/GET /api/url 
 
-## 请求参数:
-
-    url    原网址 (GET方式请先将原网址进行URL编码)(10~255)
-    short  自定义端网址 (4~10)
-    encode 返回方式 (可选json、xml,默认为json)
-   
-## 返回:
-### json 返回示例
-```JSON
-//失败
-{
-    "code": 1001,
-    "msg": "url不能为空",
-    "url": ""
-}
-//成功
-{
-    "code": 0,
-    "msg": "success",
-    "url": "https://example.com/success"
-}
-```
-### xml 返回示例
-```xml
-<!-- 失败 -->
-<?xml version="1.0" encoding="utf-8"?>
-<res>
-  <code>-1001</code>
-  <msg>url不能为空</msg>
-  <url/>
-</res>
-<!-- 成功 -->
-<?xml version="1.0" encoding="utf-8"?>
-<res>
-  <code>0</code>
-  <msg>success</msg>
-  <url>https://example.com/success</url>
-</res>
-```
-        
-
+参考 [https://github.com/soxft/UrlShorter/wiki/API](https://github.com/soxft/UrlShorter/wiki/API)
 
 # 其他
 > 请尊重开源协议.
+>
+> 该版本可能更加面向专业用户,暂时没有设计后台即一键安装功能,后续将会增加.
