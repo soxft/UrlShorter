@@ -11,11 +11,35 @@ class urllib
     function __construct($conn)
     {
         $this->conn = $conn;
-        $this->ifUserDefine = false; //是否用户自定义短链
+        $this->ifUserDefine = true; //是否用户自定义短链
+        $this->AlreadyExists = false; //是否已经存在
+    }
+
+    /**
+     * 获取短链对应的长链接
+     * @param $short
+     * @return array
+     */
+    function getLongUrl(string $short): array
+    {
+        try {
+            $sel = $this->conn->prepare("SELECT `url` FROM `shorter` WHERE `short` = ? ");
+            $sel->execute([$short]);
+            $res = $sel->fetch();
+            if ($res) return ['code' => 0, 'msg' => 'success', 'url' => $res['url']];
+            return ['code' => 404, 'msg' => 'not found', 'data' => ''];
+        } catch (PDOException $e) {
+            $arr = ['code' => 500, 'msg' => 'error', 'data' => ''];
+            if (DEBUG) $arr['err'] = $e->getMessage();
+            return $arr;
+        }
     }
 
     /**
      * 生成短链接
+     * @param $url
+     * @param $short
+     * @return array
      */
     public function getShort(string $url, string $short): array
     {
@@ -28,10 +52,10 @@ class urllib
             if (!$short) $short = $this->createShort();
             if (!preg_match('/^[a-zA-Z0-9]{0,}$/', $short)) return ['code' => 1002, 'msg' => '短链接必须为字母,数字,组合', 'url' => ''];
             if (strlen($short) > 10 || strlen($short) < 4) return ['code' => 1003, 'msg' => '短链接长度必须在4-10位', 'url' => ''];
-            if ($this->checkShort($short)) return ['code' => 1006, 'msg' => '自定义短链接已存在', 'url' => ''];
+            if ($this->checkShort($url, $short)) return ['code' => 1006, 'msg' => '自定义短链接已存在', 'url' => ''];
             return ['code' => 0, 'msg' => 'success', 'url' => WEBURL . $this->addShorter($url, trim($short))];
         } catch (Exception $e) {
-            $arr = ['code' => 99999, 'msg' => '系统错误,请稍后再试', 'url' => ''];
+            $arr = ['code' => 99999, 'msg' => '系统错误,请重试', 'url' => ''];
             if (DEBUG) $arr['err'] = $e->getMessage();
             return $arr;
         }
@@ -42,11 +66,16 @@ class urllib
      * @param string $short
      * @return bool
      */
-    public function checkShort(string $short): bool
+    public function checkShort(string $url, string $short): bool
     {
-        $sel = $this->conn->prepare("SELECT `time` FROM `shorter` WHERE `short` = ? ");
+        $sel = $this->conn->prepare("SELECT `url` FROM `shorter` WHERE `short` = ? ");
         $sel->execute([$short]);
-        if ($sel->fetch()) return true;
+        $res = $sel->fetch();
+        if ($url == $res['url']) :
+            $this->AlreadyExists = true;
+            return false;
+        endif;
+        if ($res) return true;
         return false;
     }
 
@@ -62,7 +91,7 @@ class urllib
         if (!isset($urlArr['host'])) return 'Err';
         $Punycode = new Punycode();
         $urlArr['host'] = $Punycode->encode($urlArr['host']);
-        $url = tool::unparse_url($urlArr);
+        $url = Tool::unparse_url($urlArr);
         return $url;
     }
 
@@ -74,6 +103,7 @@ class urllib
      */
     private function addShorter(string $url, string $short)
     {
+        if ($this->AlreadyExists) return $short;
         //检测是否已经存在
         if (!$this->ifUserDefine) {
             $sel = $this->conn->prepare("SELECT `short` FROM `shorter` WHERE `url` = ? ");
@@ -82,7 +112,7 @@ class urllib
             if ($res) return $res['short'];
         }
         $insert = $this->conn->prepare("INSERT INTO `shorter` VALUES ('0', ? , ? , ? , ? )");
-        $insert->execute([$short, $url, time(), tool::getIp()]);
+        $insert->execute([$short, $url, time(), Tool::getIp()]);
         if ($insert->rowCount() === 0) throw new \Exception('写入短链接失败');
         return $short;
     }
@@ -94,13 +124,13 @@ class urllib
     private function createShort(): string
     {
         while (True) { //重复检测
-            $short = tool::randStr(is_numeric(SHORT_LEN) ? SHORT_LEN : mt_rand(4, 6));
+            $short = Tool::randStr(is_numeric(SHORT_LEN) ? SHORT_LEN : mt_rand(4, 6));
             $checkIfExists = $this->conn->prepare("SELECT * FROM `shorter` WHERE `short` = :short ");
             $checkIfExists->bindParam(':short', $short);
             $checkIfExists->execute();
             if ($checkIfExists->rowCount() == 0) break;
         }
-        $this->ifUserDefine = true;
+        $this->ifUserDefine = false;
         return $short;
     }
 }
