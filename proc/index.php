@@ -5,7 +5,7 @@
  */
 
 $url = new urllib($conn);
-$raw_url = $url->getLongUrl($_GET['short']);
+$raw_url = $url->getLongUrl($short);
 switch ($raw_url['code']) {
     case 0:
         header('Location: ' . $raw_url['url'] ?? '');

@@ -55,7 +55,7 @@ class urllib
             if ($this->checkShort($url, $short)) return ['code' => 1006, 'msg' => '自定义短链接已存在', 'url' => ''];
             return ['code' => 0, 'msg' => 'success', 'url' => WEBURL . $this->addShorter($url, trim($short))];
         } catch (Exception $e) {
-            $arr = ['code' => 99999, 'msg' => '系统错误,请稍后再试', 'url' => ''];
+            $arr = ['code' => 99999, 'msg' => '系统错误,请重试', 'url' => ''];
             if (DEBUG) $arr['err'] = $e->getMessage();
             return $arr;
         }
