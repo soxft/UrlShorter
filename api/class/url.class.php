@@ -71,12 +71,12 @@ class urllib
         $sel = $this->conn->prepare("SELECT `url` FROM `shorter` WHERE `short` = ? ");
         $sel->execute([$short]);
         $res = $sel->fetch();
+        if (!$res) return false;
         if ($url == $res['url']) :
             $this->AlreadyExists = true;
             return false;
         endif;
-        if ($res) return true;
-        return false;
+        return true;
     }
 
     /**
