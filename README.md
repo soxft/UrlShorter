@@ -1,7 +1,7 @@
 # UrlShorter
 >这是一个足够简洁的Url短网址生成器 
 >
-> This is a simple Url shortener.
+> This is a simple Url shorter.
 
 # 兼容性
 
