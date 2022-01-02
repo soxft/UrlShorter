@@ -29,8 +29,8 @@
     <!-- Javascript -->
     <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/soxft/cdn@1.9/urlshorting/clipboard.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/soxft/cdn@2.7/jquery/jquery-qrcode/jquery.qrcode.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/soxft/cdn@1.0.0/urlshorting/clipboard.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/soxft/cdn@1.0.0/jquery/jquery-qrcode/jquery.qrcode.min.js"></script>
     <script src="https://www.layuicdn.com/layer/layer.js"></script>
     <script src="assets/js/main.js?v=1.01"></script>
 </head>
