@@ -12,7 +12,7 @@
 - step 1: `git clone git@github.com:soxft/UrlShorter.git`
 - step 2: 修改 /api/config.php 中填写您的mysql信息 以及网址等
 - step 3: 导入/mysql.sql 至您的数据库
-- step 4: 配伪静态(/nginx.conf) 目前仅有nginx的伪静态配置, 您也可以尝试转换为Apache及iis的伪静态
+- step 4: 配伪静态(/nginx.conf 或 /.htaccess) 目前仅有nginx与apache的伪静态配置, 您也可以尝试转换为iis的伪静态
 - step 5: 开始使用
 
 # API
