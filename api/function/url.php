@@ -4,13 +4,17 @@
  * 处理网址缩短
  */
 
-require_once CLASSROOT . "url.class.php";
-require_once CLASSROOT . "punycode/Punycode.php";
+require_once CLASS_ROOT . "url.php";
+require_once CLASS_ROOT . "punycode/Punycode.php";
 
 
-class url extends urllib
+class url extends Urllib
 {
-    function __construct($conn,$param,$method)
+    private object $conn;
+    private array  $param;
+    private string $method;
+
+    function __construct(object $conn,array $param,string $method)
     {
         $this->conn = $conn;
         $this->param = $param;
@@ -21,6 +25,6 @@ class url extends urllib
     public function run(): array
     {   
         if (!isset($this->param['url'])) return ['code' => 1001,'msg' => 'URL不能为空'];
-        return parent::getShort($this->param['url'],isset($this->param['short']) ? $this->param['short'] : '');
+        return parent::getShort($this->param['url'], $this->param['short'] ?? '');
     }
 }

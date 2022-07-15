@@ -63,7 +63,7 @@
                             <label>自定义短链</label>
                                 <div class="input-group mb-3">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text"><?php echo WEBURL ?></span>
+                                        <span class="input-group-text"><?php echo WEB_URL ?></span>
                                     </div>
                                     <input type="text" class="form-control short">
                                 </div>

@@ -6,6 +6,23 @@
 
 class Main
 {
+    /**
+     * @var object
+     */
+    private object $conn;
+    /**
+     * @var string
+     */
+    private string $method;
+    /**
+     * @var array
+     */
+    private array $param;
+    /**
+     * @var string
+     */
+    private string $apiMethod;
+
     function __construct(object $conn, string $method, array $param, string $apiMethod)
     {
         $this->conn = $conn;
@@ -22,7 +39,8 @@ class Main
             return ['code' => 1, 'msg' => 'method not exist'];
         }
 
-        require_once FUNCTIONROOT . $this->method . '.php';
+        require_once FUNCTION_ROOT . $this->method . '.php';
+        
         if (!class_exists($this->method) || !method_exists($this->method, 'run')) {
             header("HTTP/1.1 404 NOT FOUND");
             return ['code' => 2, 'msg' => 'method not exist'];
@@ -34,7 +52,7 @@ class Main
 
     private static function checkFileExist(string $filePath): bool
     {
-        if (file_exists(FUNCTIONROOT . $filePath . '.php')) return true;
+        if (file_exists(FUNCTION_ROOT . $filePath . '.php')) return true;
         return false;
     }
 

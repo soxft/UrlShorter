@@ -6,9 +6,16 @@
 
 use TrueBV\Punycode;
 
-class urllib
+class Urllib
 {
-    function __construct($conn)
+    private object $conn;
+    private bool $ifUserDefine;
+    /**
+     * @var false
+     */
+    private bool $AlreadyExists;
+
+    function __construct(object $conn)
     {
         $this->conn = $conn;
         $this->ifUserDefine = true; //是否用户自定义短链
@@ -17,7 +24,7 @@ class urllib
 
     /**
      * 获取短链对应的长链接
-     * @param $short
+     * @param string $short
      * @return array
      */
     function getLongUrl(string $short): array
@@ -37,8 +44,8 @@ class urllib
 
     /**
      * 生成短链接
-     * @param $url
-     * @param $short
+     * @param string $url
+     * @param string $short
      * @return array
      */
     public function getShort(string $url, string $short): array
@@ -53,7 +60,7 @@ class urllib
             if (!preg_match('/^[a-zA-Z0-9]{0,}$/', $short)) return ['code' => 1002, 'msg' => '短链接必须为字母,数字,组合', 'url' => ''];
             if (strlen($short) > 10 || strlen($short) < 4) return ['code' => 1003, 'msg' => '短链接长度必须在4-10位', 'url' => ''];
             if ($this->checkShort($url, $short)) return ['code' => 1006, 'msg' => '自定义短链接已存在', 'url' => ''];
-            return ['code' => 0, 'msg' => 'success', 'url' => WEBURL . $this->addShorter($url, trim($short))];
+            return ['code' => 0, 'msg' => 'success', 'url' => WEB_URL . $this->addShorter($url, trim($short))];
         } catch (Exception $e) {
             $arr = ['code' => 99999, 'msg' => '系统错误,请重试', 'url' => ''];
             if (DEBUG) $arr['err'] = $e->getMessage();
@@ -63,6 +70,7 @@ class urllib
 
     /**
      * 检测短链接是否存在
+     * @param string $url
      * @param string $short
      * @return bool
      */
@@ -83,6 +91,7 @@ class urllib
      * 处理URL
      * @param string $url
      * @return string
+     * @throws Exception
      */
     public function getUrl(string $url): string
     {
@@ -99,9 +108,10 @@ class urllib
      * 写入短链
      * @param string $url
      * @param string $short
-     * @return array
+     * @return string
+     * @throws Exception
      */
-    private function addShorter(string $url, string $short)
+    private function addShorter(string $url, string $short): string
     {
         if ($this->AlreadyExists) return $short;
         //检测是否已经存在

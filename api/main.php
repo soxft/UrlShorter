@@ -4,9 +4,9 @@
  * API入口文件
  */
 require_once "config.php"; //引用配置文件
-require_once CLASSROOT . "main.class.php";
-require_once CLASSROOT . "tool.class.php";
-require_once INCLUDEROOT . "db.php";
+require_once CLASS_ROOT . "main.php";
+require_once CLASS_ROOT . "tool.php";
+require_once INCLUDE_ROOT . "db.php";
 
 $_GET     && main::SafeFilter($_GET);
 $_POST    && main::SafeFilter($_POST);

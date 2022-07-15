@@ -7,7 +7,7 @@ class Tool
 {
     /**
      * 随机字符串
-     * @param int $length
+     * @param int $n
      * @return string
      */
     public static function randStr(int $n): string
@@ -31,6 +31,7 @@ class Tool
     {
         if (PHP_SAPI !== "cli") {
             $unknown = 'unknown';
+            $ip = "";
             if (isset($_SERVER['HTTP_X_FORWARDED_FOR']) && $_SERVER['HTTP_X_FORWARDED_FOR'] && strcasecmp($_SERVER['HTTP_X_FORWARDED_FOR'], $unknown)) {
                 $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
             } elseif (isset($_SERVER['REMOTE_ADDR']) && $_SERVER['REMOTE_ADDR'] && strcasecmp($_SERVER['REMOTE_ADDR'], $unknown)) {
@@ -53,21 +54,21 @@ class Tool
         $xml .= '</res>';
         return $xml;
     }
+
     /**
-     * 将parse_url 转换回来 
-     * @param array $url
+     * 将parse_url 转换回来
+     * @param $parsed_url
      * @return string
-     * @throws Exception
      */
     public static function unparse_url($parsed_url): string
     {
         $scheme   = isset($parsed_url['scheme']) ? $parsed_url['scheme'] . '://' : '';
-        $host     = isset($parsed_url['host']) ? $parsed_url['host'] : '';
+        $host     = $parsed_url['host'] ?? '';
         $port     = isset($parsed_url['port']) ? ':' . $parsed_url['port'] : '';
-        $user     = isset($parsed_url['user']) ? $parsed_url['user'] : '';
+        $user     = $parsed_url['user'] ?? '';
         $pass     = isset($parsed_url['pass']) ? ':' . $parsed_url['pass']  : '';
         $pass     = ($user || $pass) ? "$pass@" : '';
-        $path     = isset($parsed_url['path']) ? $parsed_url['path'] : '';
+        $path     = $parsed_url['path'] ?? '';
         $query    = isset($parsed_url['query']) ? '?' . $parsed_url['query'] : '';
         $fragment = isset($parsed_url['fragment']) ? '#' . $parsed_url['fragment'] : '';
         return "$scheme$user$pass$host$port$path$query$fragment";
