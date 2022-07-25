@@ -17,9 +17,3 @@
 # API
 
 参考 [https://github.com/soxft/UrlShorter/wiki/API](https://github.com/soxft/UrlShorter/wiki/API)
-
-# 其他
-
-> 请尊重开源协议.
->
-> 该版本可能更加面向专业用户,暂时没有设计后台以及一键安装功能,后续将会增加.
